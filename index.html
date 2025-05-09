@@ -81,7 +81,45 @@
     </section>
 
     <!-- Re-inserted Financial Tools Section -->
-    [INSERTED FINANCIAL TOOLS CODE FROM CURRENT DOCUMENT]
+    <section id="tools" class="py-20 fade-in">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-semibold text-center mb-10">Free Financial Tools</h2>
+    <div class="grid md:grid-cols-2 gap-10">
+      <div class="tool-box">
+        <h3 class="text-xl font-bold mb-4">Mortgage Calculator</h3>
+        <input type="number" id="loanAmount" placeholder="Loan Amount" class="w-full px-4 py-2 border rounded" />
+        <input type="number" step="0.01" id="interestRate" placeholder="Interest Rate (%)" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="loanTerm" placeholder="Loan Term (years)" class="w-full px-4 py-2 border rounded" />
+        <button onclick="calculateMortgage()" class="btn-main mt-2 px-4 py-2 rounded">Calculate</button>
+        <p id="mortgageResult" class="mt-4 font-semibold"></p>
+      </div>
+      <div class="tool-box">
+        <h3 class="text-xl font-bold mb-4">Rental ROI Calculator</h3>
+        <input type="number" id="purchasePrice" placeholder="Purchase Price" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="monthlyRent" placeholder="Monthly Rent" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="monthlyExpenses" placeholder="Monthly Expenses" class="w-full px-4 py-2 border rounded" />
+        <button onclick="calculateROI()" class="btn-main mt-2 px-4 py-2 rounded">Calculate</button>
+        <p id="roiResult" class="mt-4 font-semibold"></p>
+      </div>
+      <div class="tool-box">
+        <h3 class="text-xl font-bold mb-4">Compound Interest</h3>
+        <input type="number" id="initialAmount" placeholder="Initial Investment" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="compoundRate" placeholder="Annual Interest Rate (%)" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="compoundYears" placeholder="Years" class="w-full px-4 py-2 border rounded" />
+        <button onclick="calculateCompound()" class="btn-main mt-2 px-4 py-2 rounded">Calculate</button>
+        <p id="compoundResult" class="mt-4 font-semibold"></p>
+      </div>
+      <div class="tool-box">
+        <h3 class="text-xl font-bold mb-4">Break-Even Calculator</h3>
+        <input type="number" id="fixedCosts" placeholder="Fixed Costs" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="variableCost" placeholder="Variable Cost per Unit" class="w-full px-4 py-2 border rounded" />
+        <input type="number" id="pricePerUnit" placeholder="Price per Unit" class="w-full px-4 py-2 border rounded" />
+        <button onclick="calculateBreakEven()" class="btn-main mt-2 px-4 py-2 rounded">Calculate</button>
+        <p id="breakEvenResult" class="mt-4 font-semibold"></p>
+      </div>
+    </div>
+  </div>
+</section>
 
     <section id="contact" class="py-20 bg-white fade-in">
       <div class="container mx-auto px-4 max-w-lg">
@@ -121,6 +159,38 @@
       });
     }, { threshold: 0.1 });
     fadeEls.forEach(el => observer.observe(el));
-  </script>
+    function calculateMortgage() {
+    const P = parseFloat(document.getElementById('loanAmount').value);
+    const r = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+    const n = parseFloat(document.getElementById('loanTerm').value) * 12;
+    const monthly = (P * r) / (1 - Math.pow(1 + r, -n));
+    document.getElementById('mortgageResult').innerText = isFinite(monthly) ? `Estimated Monthly Payment: $${monthly.toFixed(2)}` : '';
+  }
+
+  function calculateROI() {
+    const price = parseFloat(document.getElementById('purchasePrice').value);
+    const rent = parseFloat(document.getElementById('monthlyRent').value);
+    const expenses = parseFloat(document.getElementById('monthlyExpenses').value);
+    const cashFlow = (rent - expenses) * 12;
+    const roi = (cashFlow / price) * 100;
+    document.getElementById('roiResult').innerText = isFinite(roi) ? `Estimated Annual ROI: ${roi.toFixed(2)}%` : '';
+  }
+
+  function calculateCompound() {
+    const P = parseFloat(document.getElementById('initialAmount').value);
+    const r = parseFloat(document.getElementById('compoundRate').value) / 100;
+    const t = parseFloat(document.getElementById('compoundYears').value);
+    const futureValue = P * Math.pow(1 + r, t);
+    document.getElementById('compoundResult').innerText = isFinite(futureValue) ? `Future Value: $${futureValue.toFixed(2)}` : '';
+  }
+
+  function calculateBreakEven() {
+    const fixed = parseFloat(document.getElementById('fixedCosts').value);
+    const variable = parseFloat(document.getElementById('variableCost').value);
+    const price = parseFloat(document.getElementById('pricePerUnit').value);
+    const breakEven = fixed / (price - variable);
+    document.getElementById('breakEvenResult').innerText = isFinite(breakEven) ? `Break-Even Units: ${Math.ceil(breakEven)}` : '';
+  }
+</script>
 </body>
 </html>
